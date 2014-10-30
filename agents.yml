@@ -1,0 +1,7 @@
+---
+- hosts: sensu_agents
+  gather_facts: no
+  sudo: yes
+  roles:
+    - sensu/common
+    - sensu/agent

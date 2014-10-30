@@ -1,0 +1,18 @@
+rabbitmq_ip: 192.168.33.11
+rabbitmq_port: 5671
+rabbitmq_sensu_user: sensu
+rabbitmq_sensu_pass: sensu
+rabbitmq_sensu_vhost: /sensu
+
+sensu_api_ip: 192.168.33.11
+sensu_api_port: 4567
+sensu_api_user: admin
+sensu_api_pass: secret
+
+uchiwa_port: 3000
+uchiwa_user: uchiwa
+uchiwa_pass: uchiwa
+
+sensu_client_name: sensu_agent_node
+sensu_client_ip: 192.168.33.12
+sensu_subscription_group: testgroup

@@ -1,0 +1,21 @@
+---
+- name: check EPEL-6 yum repository which contains Erlang R14B.
+  command: rpm -q epel-release-6-8.noarch
+  register: result
+  ignore_errors: True
+
+- name: install EPEL-6 yum repository which contains Erlang R14B.
+  command: rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+  when: result|failed
+
+- name: install redis.
+  yum: name=redis state=installed
+
+- name: setup rc script for redis.
+  command: chkconfig redis on
+
+- name: start redis.
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - redis
+

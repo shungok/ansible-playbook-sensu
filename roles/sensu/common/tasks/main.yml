@@ -1,0 +1,15 @@
+---
+- name: set repo for sensu.
+  copy: src=sensu.repo dest=/etc/yum.repos.d/sensu.repo
+
+- name: install sensu.
+  yum: name=sensu state=installed
+
+- name: create ssl certification files dir for sensu.
+  command: mkdir -p /etc/sensu/ssl
+
+- name: create ssl setting for sensu.
+  copy: src=files/ssl_certs/server/{{ item }} dest=/etc/sensu/ssl/{{ item }}
+  with_items:
+    - cert.pem
+    - key.pem

@@ -1,0 +1,5 @@
+[sensu_monitors]
+smonitor
+
+[sensu_agents]
+sagent

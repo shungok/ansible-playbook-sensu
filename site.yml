@@ -1,0 +1,3 @@
+---
+- include: monitors.yml
+- include: agents.yml

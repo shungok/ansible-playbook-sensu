@@ -1,0 +1,53 @@
+---
+- name: check EPEL-6 yum repository which contains Erlang R14B.
+  command: rpm -q epel-release-6-8.noarch
+  register: result
+  ignore_errors: True
+
+- name: install EPEL-6 yum repository which contains Erlang R14B.
+  command: rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+  when: result|failed
+
+- name: install erlang.
+  yum: name=erlang state=installed
+
+- name: get public key for installing rabbitmq.
+  command: rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+
+- name: check rabbitmq yum repository.
+  command: rpm -q rabbitmq-server-3.2.1-1.noarch
+  register: result
+  ignore_errors: True
+
+- name: install rabbitmq.
+  command: rpm -Uvh http://www.rabbitmq.com/releases/rabbitmq-server/v3.2.1/rabbitmq-server-3.2.1-1.noarch.rpm
+  when: result|failed
+
+- name: create ssl certification files dir for rabbitmq.
+  command: mkdir -p /etc/rabbitmq/ssl
+
+- name: create ssl setting 1 for rabbitmq.
+  copy: src=files/ssl_certs/server/{{ item }} dest=/etc/rabbitmq/ssl/{{ item }}
+  with_items:
+    - cert.pem
+    - key.pem
+
+- name: create ssl setting 2 for rabbitmq.
+  copy: src=files/ssl_certs/sensu_ca/{{ item }} dest=/etc/rabbitmq/ssl/{{ item }}
+  with_items:
+    - cacert.pem
+
+- name: set config file for rabbitmq.
+  template: src=rabbitmq.config.j2 dest=/etc/rabbitmq/rabbitmq.config
+
+- name: enable the rabbitmq web management console.
+  command: rabbitmq-plugins enable rabbitmq_management
+
+- name: setup rc script for rabbitmq.
+  command: chkconfig rabbitmq-server on
+
+- name: restart rabbitmq server.
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - rabbitmq-server
+

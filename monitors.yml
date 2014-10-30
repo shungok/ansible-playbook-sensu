@@ -1,0 +1,9 @@
+---
+- hosts: sensu_monitors
+  gather_facts: no
+  sudo: yes
+  roles:
+    - rabbitmq
+    - redis
+    - sensu/common
+    - sensu/monitor
