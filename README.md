@@ -9,9 +9,9 @@
 ## Way to setup
 
 ```
+% vagrant up
 % vagrant ssh-config smonitor > ssh_config
 % vagrant ssh-config sagent  >> ssh_config
-% vagrant up
 % ansible-playbook site.yml
 ```
 
