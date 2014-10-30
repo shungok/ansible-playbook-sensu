@@ -9,11 +9,8 @@
 ## Way to setup
 
 ```
-<<<<<<< HEAD
-=======
 % vagrant ssh-config smonitor > ssh_config
 % vagrant ssh-config sagent  >> ssh_config
->>>>>>> first commit.
 % vagrant up
 % ansible-playbook site.yml
 ```
