@@ -4,7 +4,7 @@
 
 * CentOS 6.5 vagrant box file : 
   [centos65-x86_64-20140116.box](https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box, "centos65-x86_64-20140116.box")
-
+* sensu version : 0.20.3
 
 ## Way to setup
 
@@ -17,7 +17,9 @@
 
 ## Variables for your setting
 
-``` Vagrantfile
+### Vagrantfile
+
+```
 …
 host.vm.hostname = "smonitor"
 host.vm.network "private_network", ip: "192.168.33.11"
@@ -28,7 +30,9 @@ host.vm.network "private_network", ip: "192.168.33.12"
 
 ```
 
-``` group_vars/all.yml
+### group_vars/all.yml
+
+```yaml
 rabbitmq_ip: 192.168.33.11
 rabbitmq_port: 5671
 rabbitmq_sensu_user: sensu

@@ -4,7 +4,7 @@
   with_items:
     - rabbitmq.json
     - client.json
- 
+
 - name: install modules.
   yum: name={{ item }} state=installed
   with_items:
@@ -21,10 +21,13 @@
     - wget
 
 - name: get sample proc check script.
-  command: sudo wget -O /etc/sensu/plugins/check-procs.rb https://raw.github.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb
+  command: sudo wget -O /etc/sensu/plugins/check-procs.rb https://raw.githubusercontent.com/sensu-plugins/sensu-plugins-process-checks/master/bin/check-process.rb
 
 - name: set stat for sample proc check script.
   file: path=/etc/sensu/plugins/check-procs.rb owner=sensu group=sensu mode=0755
+
+- name: give priority to embedded ruby.
+  command: sed -c -i'.org' -e 's/^\(EMBEDDED_RUBY\)=.*$/\1=true/' /etc/default/sensu
 
 - name: start sensu client.
   service: name={{ item }} state=started enabled=yes
