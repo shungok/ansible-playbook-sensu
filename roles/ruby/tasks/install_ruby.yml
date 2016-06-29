@@ -1,0 +1,22 @@
+---
+- name: install dependency packages for building ruby.
+  yum: name={{ item }} state=latest
+  with_items:
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+
+- name: check ruby.
+  shell: sudo -i rbenv versions | grep {{ install_ruby_version }}
+  register: ruby_installed
+  ignore_errors: True
+
+- name: install ruby.
+  command: sudo -i rbenv install {{ install_ruby_version }}
+  when: ruby_installed.rc != 0
+
+- name: set global ruby version.
+  command: sudo -i rbenv global {{ install_ruby_version }}
+
+- name: print global ruby version.
+  command: sudo -i rbenv versions

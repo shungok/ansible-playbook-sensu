@@ -1,5 +1,8 @@
 ---
 - hosts: sensu_agents
+  vars:
+    install_ruby_version: 2.3.0
+    rbenv_install_dir: /opt
   gather_facts: no
   sudo: yes
   roles:

@@ -1,0 +1,34 @@
+---
+- name: install the latest version of Git.
+  yum: name=git state=latest
+
+- name: make opt directory.
+  command: mkdir -p {{ rbenv_install_dir }}
+
+- name: check rbenv directory.
+  command: ls -l {{ rbenv_install_dir }}/rbenv
+  register: check_rbenv_home_dir
+  ignore_errors: True
+
+- name: checkout rbenv
+  git: repo=https://github.com/rbenv/rbenv.git
+       dest={{ rbenv_install_dir }}/rbenv
+  when: check_rbenv_home_dir.rc == 2
+
+- name: set owner and permission to rbenv home directory.
+  file: path={{ rbenv_install_dir }}/rbenv
+        owner=root
+        group=wheel
+        mode=0775
+
+- name: make rbenv plugins directory.
+  command: mkdir {{ rbenv_install_dir }}/rbenv/plugins
+  register: mkdir_rbenv_plugins_dir
+  ignore_errors: True
+
+- name: checkout ruby-build plugin for rbenv.
+  git: repo=https://github.com/rbenv/ruby-build
+       dest={{ rbenv_install_dir }}/rbenv/plugins/ruby-build
+  when: mkdir_rbenv_plugins_dir.rc == 0
+
+- template: src=profile4rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh
